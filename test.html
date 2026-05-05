@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Vocacional Canarias</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #f5f7fb;
+      --fg: #1a1f36;
+      --card: #ffffff;
+      --card-fg: #1a1f36;
+      --primary: #3b6fce;
+      --primary-fg: #ffffff;
+      --muted: #e8ecf4;
+      --muted-fg: #6b7694;
+      --border: #dde3ef;
+      --accent: #0ea391;
+      --accent-fg: #ffffff;
+      --radius: 0.75rem;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-inner {
+      max-width: 56rem;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .header-icon {
+      width: 2rem;
+      height: 2rem;
+      background: var(--primary);
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .header-icon svg {
+      width: 1rem;
+      height: 1rem;
+      color: var(--primary-fg);
+    }
+
+    .header-title {
+      font-size: 0.875rem;
+      font-weight: 700;
+    }
+
+    .header-steps {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .header-step {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--muted-fg);
+      transition: color 0.2s;
+    }
+
+    .header-step.active {
+      color: var(--primary);
+    }
+
+    .header-step.past {
+      color: var(--fg);
+    }
+
+    .header-sep {
+      width: 1.5rem;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .header-sep.active {
+      background: var(--primary);
+    }
+
+    /* ── Container ── */
+    .container {
+      max-width: 56rem;
+      margin: 0 auto;
+      padding: 2rem 1rem 3rem;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-header {
+      padding: 1.25rem 1.5rem 0.75rem;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .card-desc {
+      font-size: 0.8125rem;
+      color: var(--muted-fg);
+    }
+
+    .card-content {
+      padding: 0 1.5rem 1.5rem;
+    }
+
+    /* ── Center text ── */
+    .text-center {
+      text-align: center;
+    }
+
+    .page-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+
+    .page-subtitle {
+      color: var(--muted-fg);
+      font-size: 0.9375rem;
+      max-width: 32rem;
+      margin: 0 auto 1.5rem;
+    }
+
+    /* ── Radio Options ── */
+    .radio-grid {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .radio-grid.cols-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .radio-grid.cols-4 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: 640px) {
+      .radio-grid.cols-4 {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.75rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-size: 0.875rem;
+    }
+
+    .radio-option:hover {
+      background: var(--muted);
+    }
+
+    .radio-option.selected {
+      border-color: var(--primary);
+      background: rgba(59, 111, 206, 0.05);
+      box-shadow: 0 0 0 1px var(--primary);
+    }
+
+    .radio-option input {
+      accent-color: var(--primary);
+      width: 1rem;
+      height: 1rem;
+      cursor: pointer;
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.625rem 1.25rem;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: var(--primary-fg);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      filter: brightness(1.1);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--fg);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover:not(:disabled) {
+      background: var(--muted);
+    }
+
+    .btn-lg {
+      padding: 0.75rem 1.5rem;
+      font-size: 0.9375rem;
+    }
+
+    .flex-end {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .flex-between {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .flex-center {
+      display: flex;
+      justify-content: center;
+    }
+
+    /* ── Progress ── */
+    .progress-bar {
+      width: 100%;
+      height: 0.625rem;
+      background: var(--muted);
+      border-radius: 9999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 9999px;
+      transition: width 0.4s ease;
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.75rem;
+    }
+
+    .progress-info span {
+      font-size: 0.8125rem;
+      color: var(--muted-fg);
+    }
+
+    /* ── Category Header ── */
+    .cat-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .cat-header h2 {
+      font-size: 1.125rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    /* ── Question Block ── */
+    .question-block {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      transition: all 0.15s;
+      margin-bottom: 1rem;
+    }
+
+    .question-block.answered {
+      border-color: rgba(59, 111, 206, 0.3);
+      background: rgba(59, 111, 206, 0.02);
+    }
+
+    .question-text {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .question-num {
+      width: 1.5rem;
+      height: 1.5rem;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      background: var(--muted);
+      color: var(--muted-fg);
+    }
+
+    .question-num.done {
+      background: var(--primary);
+      color: var(--primary-fg);
+    }
+
+    .question-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    /* ── Likert Scale ── */
+    .likert-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+      justify-content: space-between;
+    }
+
+    .likert-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.5rem 0.75rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      flex: 1;
+      min-width: 3.5rem;
+    }
+
+    .likert-option:hover {
+      background: var(--muted);
+    }
+
+    .likert-option.selected {
+      border-color: var(--primary);
+      background: rgba(59, 111, 206, 0.1);
+      box-shadow: 0 0 0 1px var(--primary);
+    }
+
+    .likert-option input {
+      display: none;
+    }
+
+    .likert-value {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: rgba(26, 31, 54, 0.6);
+    }
+
+    .likert-option.selected .likert-value {
+      color: var(--primary);
+    }
+
+    .likert-label {
+      font-size: 0.5625rem;
+      color: var(--muted-fg);
+      text-align: center;
+      line-height: 1.2;
+      display: none;
+    }
+
+    @media (min-width: 640px) {
+      .likert-label {
+        display: block;
+      }
+    }
+
+    .likert-ends {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.625rem;
+      color: var(--muted-fg);
+      margin-top: 0.5rem;
+    }
+
+    @media (min-width: 640px) {
+      .likert-ends {
+        display: none;
+      }
+    }
+
+    /* ── Results ── */
+    .results-grid {
+      display: grid;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .results-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .result-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .result-card.top {
+      box-shadow: 0 0 0 2px var(--primary);
+    }
+
+    .result-badge {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted-fg);
+    }
+
+    .result-name {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      margin: 0.25rem 0 0.75rem;
+    }
+
+    .result-score {
+      font-size: 1.75rem;
+      font-weight: 800;
+    }
+
+    .result-score small {
+      font-size: 0.8125rem;
+      font-weight: 400;
+      color: var(--muted-fg);
+      margin-left: 0.25rem;
+    }
+
+    .bar-bg {
+      height: 0.5rem;
+      background: var(--muted);
+      border-radius: 9999px;
+      margin-top: 0.5rem;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 9999px;
+      transition: width 0.7s ease;
+    }
+
+    /* ── Chart ── */
+    .chart-container {
+      margin-bottom: 1.5rem;
+    }
+
+    .chart-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .chart-rank {
+      width: 1.25rem;
+      text-align: right;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--muted-fg);
+    }
+
+    .chart-info {
+      flex: 1;
+    }
+
+    .chart-info-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.25rem;
+    }
+
+    .chart-info-header span:first-child {
+      font-size: 0.8125rem;
+      font-weight: 500;
+    }
+
+    .chart-info-header span:last-child {
+      font-size: 0.8125rem;
+      font-weight: 700;
+    }
+
+    /* ── Radar Chart (Canvas) ── */
+    .radar-wrap {
+      display: flex;
+      justify-content: center;
+      padding: 1rem 0;
+    }
+
+    .radar-wrap canvas {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .two-col {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 1024px) {
+      .two-col {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* ── Category color bands ── */
+    .cat-salud {
+      color: #0284c7;
+      background: #f0f9ff;
+      border-color: #bae6fd;
+    }
+
+    .cat-tecnologia {
+      color: #4f46e5;
+      background: #eef2ff;
+      border-color: #c7d2fe;
+    }
+
+    .cat-economia {
+      color: #d97706;
+      background: #fffbeb;
+      border-color: #fde68a;
+    }
+
+    .cat-artes {
+      color: #e11d48;
+      background: #fff1f2;
+      border-color: #fecdd3;
+    }
+
+    .cat-deportes {
+      color: #ea580c;
+      background: #fff7ed;
+      border-color: #fed7aa;
+    }
+
+    .cat-social {
+      color: #78716c;
+      background: #fafaf9;
+      border-color: #e7e5e4;
+    }
+
+    .cat-humanidades {
+      color: #475569;
+      background: #f8fafc;
+      border-color: #e2e8f0;
+    }
+
+    .cat-agraria {
+      color: #059669;
+      background: #ecfdf5;
+      border-color: #a7f3d0;
+    }
+
+    /* ── Section ── */
+    .section {
+      display: none;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    /* ── Hiding utility ── */
+    .hidden {
+      display: none !important;
+    }
+
+    /* ── API Status ── */
+    .api-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      padding: 0.25rem 0.625rem;
+      border-radius: 9999px;
+      background: var(--muted);
+      color: var(--muted-fg);
+    }
+
+    .api-status .dot {
+      width: 0.375rem;
+      height: 0.375rem;
+      border-radius: 9999px;
+      background: #94a3b8;
+    }
+
+    .api-status.online .dot {
+      background: #22c55e;
+    }
+
+    .api-status.offline .dot {
+      background: #f97316;
+    }
+
+    /* ── Recommendations Section ── */
+    .reco-section {
+      margin-top: 1.5rem;
+    }
+
+    .reco-category {
+      margin-bottom: 1rem;
+    }
+
+    .reco-category-title {
+      font-size: 0.875rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .reco-category-title .reco-dot {
+      width: 0.5rem;
+      height: 0.5rem;
+      border-radius: 9999px;
+    }
+
+    .reco-tipo {
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted-fg);
+      margin-top: 0.5rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .reco-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .reco-list li {
+      font-size: 0.8125rem;
+      padding: 0.375rem 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .reco-list li::before {
+      content: "";
+      width: 0.25rem;
+      height: 0.25rem;
+      background: var(--primary);
+      border-radius: 9999px;
+      flex-shrink: 0;
+    }
+
+    .reco-offline-msg {
+      text-align: center;
+      padding: 1.5rem;
+      color: var(--muted-fg);
+      font-size: 0.8125rem;
+    }
+
+    .reco-loading {
+      text-align: center;
+      padding: 1.5rem;
+      color: var(--muted-fg);
+      font-size: 0.8125rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ══════════ HEADER ══════════ -->
+  <div class="header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <div class="header-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+          </svg>
+        </div>
+        <span class="header-title">Test Vocacional</span>
+      </div>
+      <div class="header-steps">
+        <span class="api-status" id="api-status"><span class="dot"></span><span>Comprobando...</span></span>
+        <span class="header-step active" id="step-ind-0">Datos</span>
+        <div class="header-sep" id="sep-0"></div>
+        <span class="header-step" id="step-ind-1">Cuestionario</span>
+        <div class="header-sep" id="sep-1"></div>
+        <span class="header-step" id="step-ind-2">Resultados</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ DEMOGRAPHICS ══════════ -->
+  <div class="section active" id="sec-demographics">
+    <div class="container" style="max-width:42rem;">
+      <div class="text-center" style="margin-bottom:1.5rem;">
+        <h1 class="page-title">Test Vocacional Canarias</h1>
+        <p class="page-subtitle">Descubre tus intereses profesionales respondiendo a este cuestionario. Comienza
+          completando tus datos.</p>
+      </div>
+
+      <!-- Gender -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg> Genero</div>
+          <div class="card-desc">Selecciona tu genero</div>
+        </div>
+        <div class="card-content">
+          <div class="radio-grid cols-2" id="gender-options"></div>
+        </div>
+      </div>
+
+      <!-- Island -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg> Isla de residencia</div>
+          <div class="card-desc">Selecciona tu isla</div>
+        </div>
+        <div class="card-content">
+          <div class="radio-grid cols-4" id="island-options"></div>
+        </div>
+      </div>
+
+      <!-- Course -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+              <path d="M6 12v5c0 1.1 2.7 2 6 2s6-.9 6-2v-5" />
+            </svg> Curso actual o formación adquirida</div>
+          <div class="card-desc">Selecciona tu nivel educativo</div>
+        </div>
+        <div class="card-content">
+          <div class="radio-grid cols-2" id="course-options"></div>
+        </div>
+      </div>
+      <!-----STUDIOS------->
+      <div class="card" id="uni-card" style="display: none;">
+           <div class="card-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)"
+              stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+              <path d="M6 12v5c0 1.1 2.7 2 6 2s6-.9 6-2v-5" />
+            </svg>Selecciona tu especialidad</div>
+        <div class="card-content">
+          <div class="radio-grid cols-2" id="uni-options"></div>
+        </div>
+      </div>
+      <div class="flex-end">
+        <button class="btn btn-primary btn-lg" id="btn-start" disabled>Comenzar cuestionario &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ QUESTIONNAIRE ══════════ -->
+  <div class="section" id="sec-questionnaire">
+    <div class="container" style="max-width:48rem;">
+      <div style="margin-bottom:1.5rem;">
+        <div class="progress-info">
+          <span id="q-section-label">Seccion 1 de 8</span>
+          <span id="q-answer-label">0 / 81 respuestas</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="q-progress" style="width:0%"></div>
+        </div>
+      </div>
+      <div id="q-category-card"></div>
+      <div class="flex-between" style="margin-top:1.5rem;">
+        <button class="btn btn-outline" id="btn-prev">&larr; Anterior</button>
+        <button class="btn btn-primary" id="btn-next" disabled>Siguiente &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ RESULTS ══════════ -->
+  <div class="section" id="sec-results">
+    <div class="container" style="max-width:56rem;">
+      <div class="text-center" style="margin-bottom:1.5rem;">
+        <h1 class="page-title">Tus Resultados</h1>
+        <p class="page-subtitle" id="results-demo-info"></p>
+      </div>
+      <div class="results-grid" id="results-top3"></div>
+      <div class="two-col">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Puntuacion por categoria</div>
+            <div class="card-desc">Porcentaje de afinidad con cada area vocacional</div>
+          </div>
+          <div class="card-content chart-container" id="results-bars"></div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">Perfil vocacional</div>
+            <div class="card-desc">Visualizacion radar de tus intereses</div>
+          </div>
+          <div class="card-content">
+            <div class="radar-wrap"><canvas id="radar-canvas" width="360" height="360"></canvas></div>
+          </div>
+        </div>
+      </div>
+      <div class="card reco-section" id="reco-card" style="display:none;">
+        <div class="card-header">
+          <div class="card-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1.1 2.7 2 6 2s6-.9 6-2v-5"/></svg> Estudios recomendados en tu isla</div>
+          <div class="card-desc" id="reco-subtitle">Oferta formativa disponible en toda España segun tus categorias principales</div>
+        </div>
+        <div class="card-content" id="reco-content">
+          <div class="reco-loading">Cargando recomendaciones...</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Desglose completo</div>
+        </div>
+        <div class="card-content" id="results-full"></div>
+      </div>
+      <div class="flex-center" style="padding-bottom:2rem;">
+        <button class="btn btn-outline btn-lg" id="btn-restart">&#8635; Realizar de nuevo</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ═══════════════════════════════════════════
+    //  API CONFIG
+    // ═══════════════════════════════════════════
+    const API_BASE = "https://subspirally-unswallowed-gunner.ngrok-free.dev"
+    let apiOnline = false
+    let enviado=false;
+    // Mapeo de IDs de categoria en el HTML -> IDs en la base de datos
+    const catToDb = {
+      salud: "sanitario",
+      tecnologia: "tecnologico",
+      economia: "economico",
+      artes: "artistico",
+      deportes: "deportivo",
+      social: "social_juridico",
+      humanidades: "humanistico",
+      agraria: "agropecuario_maritimo"
+    };
+
+    async function checkApiHealth() {
+      const statusEl = document.getElementById("api-status");
+      try {
+        const res = await fetch(API_BASE + "/api/health", { signal: AbortSignal.timeout(3000) });
+        if (res.ok) {
+          apiOnline = true;
+          statusEl.className = "api-status online";
+          statusEl.innerHTML = '<span class="dot"></span><span>Servidor conectado</span>';
+        } else {
+          throw new Error("not ok");
+        }
+      } catch {
+        apiOnline = false;
+        statusEl.className = "api-status offline";
+        statusEl.innerHTML = '<span class="dot"></span><span>Modo offline</span>';
+      }
+    }
+    async function enviarResultados(datosFinales) {
+  const statusEl = document.getElementById("api-status"); // Asumiendo que este elemento existe
+  if (!apiOnline) {
+    console.log("API no disponible, guardando datos localmente (simulación).");
+    // Aquí podrías implementar lógica para guardar localmente si fuera necesario
+    return;
+  }
+  try {
+    // Preparar los datos finales a enviar
+    const payload = {
+      genero: state.gender,
+      isla: state.island,
+      curso: state.course,
+      respuestas: state.answers,
+      especialidad:state.uni_study,
+    };
+
+    const respuesta = await fetch(`${API_BASE}/api/guardar_test`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (respuesta.ok) {
+      const r = await respuesta.json();
+      console.log("Datos enviados correctamente:", r);
+      statusEl.innerHTML = '<span class="dot"></span><span>Resultados guardados</span>';
+    } else {
+      throw new Error(`Error al guardar: ${respuesta.statusText}`);
+    }
+  } catch (e) {
+    console.error("Error al conectar con la API para guardar resultados:", e);
+    statusEl.className = "api-status offline";
+    statusEl.innerHTML = '<span class="dot"></span><span>Error al guardar</span>';
+  }
+}
+
+
+    // ═══════════════════════════════════════════
+    //  DATA
+    // ═══════════════════════════════════════════
+    const categories = [
+      {
+        id: "salud", name: "Salud y Ciencias de la Vida",pant:"Test Vocacional", css: "cat-salud", chartColor: "#0284c7", questions: [
+ "Me interesa comprender cómo funciona el cuerpo humano",
+    "Me gustaría trabajar en hospitales",
+    "Me gustaría estudiar medicina o biología",
+    "Me interesa trabajar en laboratorios",
+    "Me interesa ayudar en procesos sanitarios",
+    "Me gustaría realizar análisis clínicos",
+    "Me interesa comprender los organismos vivos"
+  ]
+      },
+      {
+        id: "tecnologia", name: "Tecnologia e Ingenieria",pant:"Test Vocacional", css: "cat-tecnologia", chartColor: "#4f46e5", questions: [
+   "Me gusta resolver problemas matemáticos",
+    "Me interesa comprender cómo funcionan las máquinas",
+    "Me interesa desarrollar nuevas tecnologías",
+    "Me interesa la programación informática",
+    "Me interesa desarrollar software",
+    "Me gustaría administrar sistemas informáticos",
+    "Me interesa trabajar con instalaciones eléctricas",
+    "Me interesa reparar sistemas mecánicos",
+    "Me interesa fabricar piezas mecánicas",
+    "Me interesa desarrollar soluciones técnicas",
+    "Me gustaría desarrollar soluciones tecnológicas"]
+      },
+      {
+        id: "economia", name: "Economia, Gestion y Turismo",pant:"Test Vocacional", css: "cat-economia", chartColor: "#d97706", questions: [
+    "Me gustaría dirigir una empresa",
+    "Me interesa analizar cómo funcionan los mercados",
+    "Me interesa la gestión económica",
+    "Me gustaría trabajar en marketing o publicidad",
+    "Me interesa la gestión turística",
+    "Me interesa organizar procesos administrativos",
+    "Me gustaría trabajar en gestión administrativa",
+    "Me interesa analizar cómo funcionan las empresas"]
+      },
+      {
+        id: "artes", name: "Artes y Creatividad",pant:"Test Vocacional", css: "cat-artes", chartColor: "#e11d48", questions: [
+   "Me interesa crear proyectos artísticos",
+    "Me gustaría participar en proyectos audiovisuales",
+    "Me gusta expresar ideas mediante arte o diseño",
+    "Me interesa el diseño gráfico",
+    "Me interesa producir contenido audiovisual",
+    "Me gustaría trabajar en multimedia",
+    "Me interesa el diseño gráfico aplicado",
+    "Me gustaría trabajar en artes gráficas"]
+      },
+      {
+        id: "deportes", name: "Deportes y Actividad Fisica",pant:"Test Vocacional", css: "cat-deportes", chartColor: "#ea580c", questions: [
+           "Disfruto practicando deporte",
+    "Me gustaría entrenar a otras personas",
+    "Me interesa la fisiología del deporte",
+    "Me gustaría trabajar en preparación física",
+    "Me gustaría organizar actividades deportivas",
+    "Me interesa el entrenamiento físico",
+    "Me gustaría trabajar en actividades deportivas"
+   ]
+      },
+      {
+        id: "social", name: "Social, Juridica y Educativa",pant:"Test Vocacional", css: "cat-social", chartColor: "#78716c", questions: [
+ "Me gustaría ayudar a otras personas",
+    "Me gusta explicar contenidos",
+    "Me interesa el comportamiento humano",
+    "Me gustaría enseñar o transmitir conocimientos",
+    "Me gustaría formar a otras personas",
+    "Me interesa trabajar con infancia o mayores",
+    "Me gustaría dedicarme a la educación infantil",
+    "Me interesaría trabajar con personas que necesiten apoyo",
+    "Me gustaría enseñar o transmitir conocimientos" ]
+      },
+      {
+        id: "humanidades", name: "Humanidades y Lenguas",pant:"Test Vocacional", css: "cat-humanidades", chartColor: "#475569", questions: [
+        "Me interesa aprender idiomas",
+    "Me gusta estudiar historia o cultura",
+    "Me interesa la traducción o interpretación",
+    "Me interesa estudiar filosofía o literatura",
+    "Me interesa comprender culturas y sociedades humanas","Me interesa analizar acontecimientos históricos y su impacto en la sociedad",
+"Disfruto leyendo obras literarias y reflexionando sobre su significado",
+"Me gustaría estudiar cómo evolucionan las lenguas y culturas",
+"Me interesa comprender las ideas filosóficas que han marcado la historia",
+"Disfruto investigando civilizaciones antiguas y su legado",
+"Me gustaría trabajar en ámbitos relacionados con la escritura, edición o comunicación cultural",
+"Me interesa interpretar textos y expresar opiniones argumentadas"
+ ]
+      },
+      {
+        id: "agraria", name: "Agraria y Maritimo-Pesquera",pant:"Test Vocacional", css: "cat-agraria", chartColor: "#059669", questions: [
+          "Me gustaría trabajar en contacto con la naturaleza",
+    "Me gustaría trabajar en el mar o actividades pesqueras",
+    "Me atrae trabajar con recursos naturales",
+    "Me interesa la producción agrícola o ganadera",
+    "Me gustaría trabajar gestionando explotaciones agrícolas",
+    "Me interesa trabajar en el mar o navegación",
+    "Me interesa la protección ambiental",
+    "Me gustaría trabajar en prevención de riesgos ambientales",
+    "Me gustaría trabajar en contacto con la naturaleza"]
+      }, 
+      {
+        id:"opinion", pant:"Opinión personal", css:"cat-agraria", chartColor:"#059669", questions: [
+            "Considero que tengo bastante claro qué área de estudios encaja mejor conmigo",
+"Creo que necesito orientación para decidir mi futuro académico o profesional",
+"Pienso que mis gustos personales pueden influir mucho en mi elección de estudios",
+"Considero importante que un test vocacional tenga en cuenta mi personalidad",
+"Creo que me conocería mejor respondiendo preguntas sobre mis intereses y habilidades",
+"Pienso que elegir estudios solo por salidas laborales no siempre es la mejor opción",
+"Considero que aún tengo dudas entre varias ramas académicas o profesionales",
+"Creo que mis capacidades reales son tan importantes como mis gustos al elegir estudios",
+"Pienso que una recomendación basada en mis respuestas podría ayudarme a decidir mejor",
+"Considero útil realizar un test para descubrir opciones que no había valorado antes"
+      ]
+      }
+    ];
+
+    const genderOptions = ["Masculino", "Femenino"];
+    const islandOptions = ["Tenerife", "Gran Canaria", "Lanzarote", "Fuerteventura", "La Palma", "La Gomera", "El Hierro", "La Graciosa"];
+    const courseOptions = ["1-3 ESO", "4 ESO", "1 Bachillerato", "2 Bachillerato", "FP Grado Medio", "FP Grado Superior", "Universidad", "Master","Doctorado"];
+    const uni=["Medicina",
+  "Enfermería",
+  "Psicología",
+  "Fisioterapia",
+  "Farmacia",
+  "Odontología",
+  "Veterinaria",
+  "Podología",
+  "Nutrición Humana y Dietética",
+  "Logopedia",
+  "Terapia Ocupacional",
+  "Óptica y Optometría",
+  "Arquitectura",
+  "Ingeniería Informática",
+  "Ingeniería de Software",
+  "Ingeniería Mecánica",
+  "Ingeniería Eléctrica",
+  "Ingeniería Electrónica Industrial y Automática",
+  "Ingeniería en Tecnologías de Telecomunicación",
+  "Ingeniería Civil",
+  "Ingeniería Aeroespacial",
+  "Ingeniería Química",
+  "Ingeniería en Organización Industrial",
+  "Ingeniería Biomédica",
+  "Ingeniería de Datos e Inteligencia Artificial",
+  "Derecho",
+  "Administración y Dirección de Empresas (ADE)",
+  "Economía",
+  "Criminología",
+  "Relaciones Internacionales",
+  "Periodismo",
+  "Comunicación Audiovisual",
+  "Publicidad y Relaciones Públicas",
+  "Magisterio de Educación Infantil",
+  "Magisterio de Educación Primaria",
+  "Pedagogía",
+  "Trabajo Social",
+  "Turismo",
+  "Ciencias de la Actividad Física y del Deporte",
+  "Sociología",
+  "Ciencias Políticas y de la Administración",
+  "Matemáticas",
+  "Física",
+  "Química",
+  "Biología",
+  "Biotecnología",
+  "Bioquímica",
+  "Ciencias Ambientales",
+  "Ciencias del Mar",
+  "Geología",
+  "Estadística",
+  "Historia",
+  "Historia del Arte",
+  "Filosofía",
+  "Bellas Artes",
+  "Diseño",
+  "Filología Hispánica",
+  "Estudios Ingleses",
+  "Traducción e Interpretación",
+  "Lenguas Modernas",
+  "Humanidades",
+  "Arqueología",
+  "Conservación y Restauración del Patrimonio Cultural"
+]
+
+    const likertLabels = [
+      { value: 1, label: "Muy en desacuerdo" },
+      { value: 2, label: "En desacuerdo" },
+      { value: 3, label: "Neutral" },
+      { value: 4, label: "De acuerdo" },
+      { value: 5, label: "Muy de acuerdo" }
+    ];
+
+    const totalQuestions = categories.reduce((a, c) => a + c.questions.length, 0);
+
+    // ═══════════════════════════════════════════
+    //  STATE
+    // ═══════════════════════════════════════════
+    let state = {
+      step: "demographics", // demographics | questionnaire | results
+      gender: "",
+      island: "",
+      course: "",
+      uni_study:"",
+      currentCat: 0,
+      answers: {} // "catId-qIdx" -> value
+    };
+
+    // ═══════════════════════════════════════════
+    //  HELPERS
+    // ═══════════════════════════════════════════
+    function $(id) { return document.getElementById(id); }
+    function answeredCount() { return Object.keys(state.answers).length; }
+
+    function updateStepIndicators() {
+      const steps = ["demographics", "questionnaire", "results"];
+      const idx = steps.indexOf(state.step);
+      for (let i = 0; i < 3; i++) {
+        const el = $("step-ind-" + i);
+        el.className = "header-step" + (i === idx ? " active" : i < idx ? " past" : "");
+      }
+      for (let i = 0; i < 2; i++) {
+        const sep = $("sep-" + i);
+        sep.className = "header-sep" + (i < idx ? " active" : "");
+      }
+    }
+    document.getElementById("btn-start").addEventListener("click", () => {
+
+        
+        // Cambiar a la sección del cuestionario
+        showSection("questionnaire");
+    });
+    function showSection(name) {
+      document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+      $(("sec-" + name)).classList.add("active");
+      state.step = name;
+      updateStepIndicators();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // ═══════════════════════════════════════════
+    //  DEMOGRAPHICS
+    // ═══════════════════════════════════════════
+    function buildRadioGroup(containerId, options, groupName, onSelect) {
+      const c = $(containerId);
+      c.innerHTML = "";
+      options.forEach(opt => {
+        const label = document.createElement("label");
+        label.className = "radio-option";
+        label.innerHTML = `<input type="radio" name="${groupName}" value="${opt}"><span>${opt}</span>`;
+        label.querySelector("input").addEventListener("change", () => {
+          onSelect(opt);
+          c.querySelectorAll(".radio-option").forEach(l => l.classList.remove("selected"));
+          label.classList.add("selected");
+          checkDemoComplete();
+        });
+        c.appendChild(label);
+      });
+    }
+
+    function checkDemoComplete() {
+      $("btn-start").disabled = !(state.gender && state.island && state.course);
+    }
+    function initDemographics() {
+      // Género e Isla se mantienen igual
+      buildRadioGroup("gender-options", genderOptions, "gender", v => state.gender = v);
+      buildRadioGroup("island-options", islandOptions, "island", v => state.island = v);
+      buildRadioGroup("course-options", courseOptions, "course", v => {
+        state.course = v; 
+        const uniCard = document.getElementById("uni-card");
+        if (v === "Universidad") {
+          uniCard.style.display = "block";
+        } else {
+          uniCard.style.display = "none";
+          state.uni_study = ""; // Limpiamos si elige otra cosa
+        }
+      });
+
+      // ESTUDIOS UNI: Los guardamos en una propiedad distinta del estado
+      buildRadioGroup("uni-options", uni, "uni_study", v => state.uni_study = v );
+    }
+
+    // ═══════════════════════════════════════════
+    //  QUESTIONNAIRE
+    // ═══════════════════════════════════════════
+    function renderCategory() {
+      const cat = categories[state.currentCat];
+      const catIdx = state.currentCat;
+
+      $("q-section-label").textContent = `Seccion ${catIdx + 1} de ${categories.length}`;
+      $("q-answer-label").textContent = `${answeredCount()} / ${totalQuestions} respuestas`;
+      $("q-progress").style.width = ((answeredCount() / totalQuestions) * 100) + "%";
+
+      const card = $("q-category-card");
+      let html = `<div class="card" style="border-width:2px;">`;
+      html += `<div class="cat-header ${cat.css}"><h2>${cat.pant}</h2><div class="card-desc">Indica tu grado de acuerdo con cada afirmacion</div></div>`;
+      html += `<div class="card-content" style="padding-top:1.5rem;">`;
+
+      cat.questions.forEach((q, qi) => {
+        const key = `${cat.id}-${qi}`;
+        const val = state.answers[key];
+        const answered = val !== undefined;
+        const globalNum = qi + 1;
+
+        html += `<div class="question-block ${answered ? 'answered' : ''}">`;
+        html += `<div class="question-text"><span class="question-num ${answered ? 'done' : ''}">${globalNum}</span><span class="question-label">${q}</span></div>`;
+        html += `<div class="likert-row">`;
+        likertLabels.forEach(lk => {
+          html += `<label class="likert-option ${val === lk.value ? 'selected' : ''}" data-key="${key}" data-val="${lk.value}">`;
+          html += `<input type="radio" name="${key}" value="${lk.value}" ${val === lk.value ? 'checked' : ''}>`;
+          html += `<span class="likert-value">${lk.value}</span>`;
+          html += `<span class="likert-label">${lk.label}</span>`;
+          html += `</label>`;
+        });
+        html += `</div>`;
+        html += `<div class="likert-ends"><span>1=Muy en desacuerdo</span><span>5=Muy de acuerdo</span></div>`;
+        html += `</div>`;
+      });
+
+      html += `</div></div>`;
+      card.innerHTML = html;
+
+      // Bind likert clicks
+      card.querySelectorAll(".likert-option").forEach(el => {
+        el.addEventListener("click", () => {
+          const key = el.dataset.key;
+          const val = parseInt(el.dataset.val);
+          state.answers[key] = val;
+          renderCategory();
+        });
+      });
+
+      // Update nav
+      const allAnswered = cat.questions.every((_, qi) => state.answers[`${cat.id}-${qi}`] !== undefined);
+      $("btn-next").disabled = !allAnswered;
+      $("btn-prev").disabled = false;
+      if (catIdx === categories.length - 1) {
+          if (enviado){return}
+          enviado=true
+          const datosParaGuardar = {
+              genero: state.gender,
+              isla: state.island,
+              curso: state.course,
+              respuestas: state.answers,
+              especialidad: state.especialidad
+          };
+          enviarResultados(datosParaGuardar);
+
+          $("btn-next").innerHTML = "Ver resultados &#10004;";
+      } else {
+          $("btn-next").innerHTML = "Siguiente &rarr;";
+      }
+    }
+    // --- Lógica del botón Next con el Listener que me pasaste ---
+
+   
+    // ═══════════════════════════════════════════
+    //  RESULTS
+    // ═══════════════════════════════════════════
+    function computeScores() {
+      return categories.filter(cat => cat.id !== 'opinion').map(cat => {
+        let total = 0;
+        cat.questions.forEach((_, qi) => { total += state.answers[`${cat.id}-${qi}`] || 0; });
+        const max = cat.questions.length * 5;
+        return {
+          id: cat.id,
+          name: cat.name,
+          shortName: cat.name.split(" ")[0],
+          score: total,
+          maxScore: max,
+          percent: Math.round((total / max) * 100),
+          color: cat.chartColor
+        };
+      });
+    }
+
+    function renderResults() {
+      const scores = computeScores();
+      const sorted = [...scores].sort((a, b) => b.percent - a.percent);
+      const top3 = sorted.slice(0, 3);
+
+      $("results-demo-info").textContent = `${state.gender} · ${state.island} · ${state.course}`;
+
+      // Top 3 cards
+      const badges = ["Mayor afinidad", "2.a opcion", "3.a opcion"];
+      let top3Html = "";
+      top3.forEach((cat, i) => {
+        top3Html += `<div class="card result-card ${i === 0 ? 'top' : ''}">`;
+        top3Html += `<div class="card-header"><div class="result-badge">${badges[i]}</div><div class="result-name">${cat.name}</div></div>`;
+        top3Html += `<div class="card-content"><div class="result-score">${cat.percent}%<small>(${cat.score}/${cat.maxScore})</small></div>`;
+        top3Html += `<div class="bar-bg"><div class="bar-fill" style="width:${cat.percent}%;background:${cat.color}"></div></div></div></div>`;
+      });
+      $("results-top3").innerHTML = top3Html;
+
+      // Bar chart
+      let barsHtml = "";
+      sorted.forEach((cat, i) => {
+        barsHtml += `<div class="chart-row"><span class="chart-rank">${i + 1}</span><div class="chart-info">`;
+        barsHtml += `<div class="chart-info-header"><span>${cat.name}</span><span style="color:${cat.color}">${cat.percent}%</span></div>`;
+        barsHtml += `<div class="bar-bg"><div class="bar-fill" style="width:${cat.percent}%;background:${cat.color}"></div></div>`;
+        barsHtml += `</div></div>`;
+      });
+      $("results-bars").innerHTML = barsHtml;
+
+      // Full breakdown
+      let fullHtml = "";
+      sorted.forEach((cat, i) => {
+        fullHtml += `<div class="chart-row"><span class="chart-rank">${i + 1}</span><div class="chart-info">`;
+        fullHtml += `<div class="chart-info-header"><span>${cat.name}</span><span style="color:${cat.color}">${cat.percent}%</span></div>`;
+        fullHtml += `<div class="bar-bg"><div class="bar-fill" style="width:${cat.percent}%;background:${cat.color}"></div></div>`;
+        fullHtml += `</div></div>`;
+      });
+      $("results-full").innerHTML = fullHtml;
+
+      // Radar chart
+      drawRadar(scores);
+
+      // Fetch recommendations from API
+      fetchRecommendations(sorted);
+    }
+
+    function drawRadar(scores) {
+      const canvas = $("radar-canvas");
+      const ctx = canvas.getContext("2d");
+      const dpr = window.devicePixelRatio || 1;
+      const size = 360;
+      canvas.width = size * dpr;
+      canvas.height = size * dpr;
+      canvas.style.width = size + "px";
+      canvas.style.height = size + "px";
+      ctx.scale(dpr, dpr);
+
+      const cx = size / 2;
+      const cy = size / 2;
+      const maxR = 130;
+      const n = scores.length;
+      const angleStep = (2 * Math.PI) / n;
+      const startAngle = -Math.PI / 2;
+
+      ctx.clearRect(0, 0, size, size);
+
+      // Grid
+      for (let ring = 1; ring <= 5; ring++) {
+        const r = (ring / 5) * maxR;
+        ctx.beginPath();
+        for (let i = 0; i <= n; i++) {
+          const angle = startAngle + i * angleStep;
+          const x = cx + r * Math.cos(angle);
+          const y = cy + r * Math.sin(angle);
+          if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = "#dde3ef";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+
+      // Axes
+      for (let i = 0; i < n; i++) {
+        const angle = startAngle + i * angleStep;
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(cx + maxR * Math.cos(angle), cy + maxR * Math.sin(angle));
+        ctx.strokeStyle = "#dde3ef";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+
+      // Data polygon
+      ctx.beginPath();
+      scores.forEach((s, i) => {
+        const r = (s.percent / 100) * maxR;
+        const angle = startAngle + i * angleStep;
+        const x = cx + r * Math.cos(angle);
+        const y = cy + r * Math.sin(angle);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      });
+      ctx.closePath();
+      ctx.fillStyle = "rgba(59,111,206,0.15)";
+      ctx.fill();
+      ctx.strokeStyle = "#3b6fce";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Data points
+      scores.forEach((s, i) => {
+        const r = (s.percent / 100) * maxR;
+        const angle = startAngle + i * angleStep;
+        const x = cx + r * Math.cos(angle);
+        const y = cy + r * Math.sin(angle);
+        ctx.beginPath();
+        ctx.arc(x, y, 4, 0, 2 * Math.PI);
+        ctx.fillStyle = "#3b6fce";
+        ctx.fill();
+        ctx.strokeStyle = "#ffffff";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      });
+
+      // Labels
+      ctx.fillStyle = "#1a1f36";
+      ctx.font = "600 11px 'Segoe UI', system-ui, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      scores.forEach((s, i) => {
+        const labelR = maxR + 22;
+        const angle = startAngle + i * angleStep;
+        let x = cx + labelR * Math.cos(angle);
+        let y = cy + labelR * Math.sin(angle);
+        ctx.fillText(s.shortName, x, y);
+      });
+
+      // Ring labels
+      ctx.fillStyle = "#6b7694";
+      ctx.font = "500 9px 'Segoe UI', system-ui, sans-serif";
+      for (let ring = 1; ring <= 5; ring++) {
+        const r = (ring / 5) * maxR;
+        ctx.fillText((ring * 20) + "%", cx + 14, cy - r + 1);
+      }
+    }
+
+    // ═══════════════════════════════════════════
+    //  API: FETCH RECOMMENDATIONS
+    // ═══════════════════════════════════════════
+// ═══════════════════════════════════════════
+    //  API: FETCH RECOMMENDATIONS (Global)
+    // ═══════════════════════════════════════════
+    async function fetchRecommendations(sorted) {
+      const recoCard = $("reco-card");
+      const recoContent = $("reco-content");
+      const recoSubtitle = $("reco-subtitle");
+
+      if (!apiOnline) {
+        recoCard.style.display = "none";
+        return;
+      }
+
+      recoCard.style.display = "block";
+      recoContent.innerHTML = '<div class="reco-loading">Cargando recomendaciones...</div>';
+
+      // Get top 3 categories and map to DB category IDs
+      const top3 = sorted.slice(0, 3);
+      const dbCats = top3.map(c => catToDb[c.id]).filter(Boolean);
+
+      if (dbCats.length === 0) {
+        recoCard.style.display = "none";
+        return;
+      }
+
+      try {
+        // Ajuste: Eliminamos el parámetro 'isla' de la URL
+        const url = `${API_BASE}/api/estudios/recomendados?cats=${encodeURIComponent(dbCats.join(","))}`;
+        const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
+
+        if (!res.ok) throw new Error("API error");
+
+        const data = await res.json();
+
+        // Ajuste: Subtítulo genérico sin mencionar la isla
+        recoSubtitle.textContent = `Oferta formativa para tus ${top3.length} categorías principales (${data.total} estudios encontrados)`;
+
+        if (data.total === 0) {
+          recoContent.innerHTML = '<div class="reco-offline-msg">No se encontraron estudios para tus categorías.</div>';
+          return;
+        }
+
+        let html = "";
+        
+        // Mapas auxiliares para colores y nombres
+        const catColorMap = {};
+        categories.forEach(c => { catColorMap[catToDb[c.id]] = c.chartColor; });
+
+        const catNameMap = {};
+        categories.forEach(c => { catNameMap[catToDb[c.id]] = c.name; });
+
+        for (const dbCat of dbCats) {
+          const estudios = data.recomendados_por_categoria[dbCat];
+          if (!estudios || estudios.length === 0) continue;
+
+          const color = catColorMap[dbCat] || "#3b6fce";
+          const catName = catNameMap[dbCat] || dbCat;
+
+          html += `<div class="reco-category">`;
+          html += `<div class="reco-category-title"><span class="reco-dot" style="background:${color}"></span>${catName}</div>`;
+
+          // Group by tipo
+          const byTipo = {};
+          estudios.forEach(e => {
+            if (!byTipo[e.tipo]) byTipo[e.tipo] = [];
+            byTipo[e.tipo].push(e.nombre);
+          });
+
+          for (const [tipo, nombres] of Object.entries(byTipo)) {
+            html += `<div class="reco-tipo">${tipo}</div>`;
+            html += `<ul class="reco-list">`;
+            nombres.forEach(n => { html += `<li>${n}</li>`; });
+            html += `</ul>`;
+          }
+          html += `</div>`;
+        }
+
+        recoContent.innerHTML = html;
+      } catch (error) {
+        console.error("Error fetching recommendations:", error);
+        recoCard.style.display = "none";
+      }
+    }
+
+    // ═══════════════════════════════════════════
+    //  EVENT BINDINGS
+    // ═══════════════════════════════════════════
+    $("btn-start").addEventListener("click", () => {
+      showSection("questionnaire");
+      renderCategory();
+    });
+
+    $("btn-next").addEventListener("click", () => {
+      if (state.currentCat < categories.length - 1) {
+        state.currentCat++;
+        renderCategory();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        showSection("results");
+        renderResults();
+      }
+    });
+
+    $("btn-prev").addEventListener("click", () => {
+      if (state.currentCat > 0) {
+        state.currentCat--;
+        renderCategory();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        showSection("demographics");
+      }
+    });
+
+    $("btn-restart").addEventListener("click", () => {
+      state = { step: "demographics", gender: "", island: "", course: "", especialidad:"", currentCat: 0, answers: {} };
+      initDemographics();
+      showSection("demographics");
+    });
+
+    // ═══════════════════════════════════════════
+    //  INIT
+    // ═══════════════════════════════════════════
+    checkApiHealth();
+    initDemographics();
+  </script>
+</body>
+
+</html>
